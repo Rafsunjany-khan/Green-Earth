@@ -56,83 +56,19 @@
     </div>
 
     <!-- Cards Section -->
-    <div class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div class="bg-white rounded-lg shadow p-4">
-        <img src="assets/tree1.jpg" alt="Tree 1" class="w-full h-40 object-cover rounded">
-        <h4 class="mt-3 font-semibold text-lg">Mango Tree</h4>
-        <p class="text-sm text-gray-600 mt-1">
-          A delicious tropical fruit tree loved for its sweet mangoes.
-        </p>
-        <div class="flex items-center justify-between mt-3">
-          <span class="px-3 py-1 text-sm border border-green-600 text-green-600 rounded-full">
-            Fruit Tree
-          </span>
-          <span class="text-green-700 font-bold">$15</span>
-        </div>
-        <button class="bg-green-600 text-white px-4 py-2 mt-4 w-full rounded-full hover:bg-green-700">
-          Add to Cart
-        </button>
-      </div>
-      <div class="bg-white rounded-lg shadow p-4">
-        <img src="assets/tree1.jpg" alt="Tree 1" class="w-full h-40 object-cover rounded">
-        <h4 class="mt-3 font-semibold text-lg">Mango Tree</h4>
-        <p class="text-sm text-gray-600 mt-1">
-          A delicious tropical fruit tree loved for its sweet mangoes.
-        </p>
-        <div class="flex items-center justify-between mt-3">
-          <span class="px-3 py-1 text-sm border border-green-600 text-green-600 rounded-full">
-            Fruit Tree
-          </span>
-          <span class="text-green-700 font-bold">$15</span>
-        </div>
-        <button class="bg-green-600 text-white px-4 py-2 mt-4 w-full rounded-full hover:bg-green-700">
-          Add to Cart
-        </button>
-      </div>
-      <div class="bg-white rounded-lg shadow p-4">
-        <img src="assets/tree1.jpg" alt="Tree 1" class="w-full h-40 object-cover rounded">
-        <h4 class="mt-3 font-semibold text-lg">Mango Tree</h4>
-        <p class="text-sm text-gray-600 mt-1">
-          A delicious tropical fruit tree loved for its sweet mangoes.
-        </p>
-        <div class="flex items-center justify-between mt-3">
-          <span class="px-3 py-1 text-sm border border-green-600 text-green-600 rounded-full">
-            Fruit Tree
-          </span>
-          <span class="text-green-700 font-bold">$15</span>
-        </div>
-        <button class="bg-green-600 text-white px-4 py-2 mt-4 w-full rounded-full hover:bg-green-700">
-          Add to Cart
-        </button>
-      </div>
-      <div class="bg-white rounded-lg shadow p-4">
-        <img src="assets/tree1.jpg" alt="Tree 1" class="w-full h-40 object-cover rounded">
-        <h4 class="mt-3 font-semibold text-lg">Mango Tree</h4>
-        <p class="text-sm text-gray-600 mt-1">
-          A delicious tropical fruit tree loved for its sweet mangoes.
-        </p>
-        <div class="flex items-center justify-between mt-3">
-          <span class="px-3 py-1 text-sm border border-green-600 text-green-600 rounded-full">
-            Fruit Tree
-          </span>
-          <span class="text-green-700 font-bold">$15</span>
-        </div>
-        <button class="bg-green-600 text-white px-4 py-2 mt-4 w-full rounded-full hover:bg-green-700">
-          Add to Cart
-        </button>
-      </div>
+    <div id="treeContainer" class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  <!-- Tree cards will be injected here -->
+</div>
 
-    </div>
-
-    <!-- Your Cart Section -->
-    <div class="lg:col-span-2 bg-white rounded-lg shadow p-4 text-center mt-6 lg:mt-0">
-      <h3 class="font-bold text-lg">Your Cart</h3>
-      <p class="mt-2">Trees: <span class="font-bold">0</span></p>
-      <p>Total Cost: <span class="font-bold">$0</span></p>
-      <button class="bg-yellow-400 text-green-900 px-4 py-2 mt-3 rounded-lg font-semibold hover:bg-yellow-300 w-full">
-        Checkout
-      </button>
-    </div>
+<!-- Your Cart Section -->
+<div class="lg:col-span-2 bg-white rounded-lg shadow p-4 text-center mt-6 lg:mt-0">
+  <h3 class="font-bold text-lg">Your Cart</h3>
+  <p class="mt-2">Trees: <span id="cartCount" class="font-bold">0</span></p>
+  <p>Total Cost: $<span id="cartTotal" class="font-bold">0</span></p>
+  <button class="bg-yellow-400 text-green-900 px-4 py-2 mt-3 rounded-lg font-semibold hover:bg-yellow-300 w-full">
+    Checkout
+  </button>
+</div>
 
   </div>
 </section>
