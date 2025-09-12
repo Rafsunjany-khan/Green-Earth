@@ -1,6 +1,4 @@
 const treeContainer = document.getElementById('treeContainer');
-const cartCount = document.getElementById('cartCount');
-const cartTotalSpan = document.getElementById('cartTotal');
 const categoryList = document.getElementById('categoryList');
 const cartDiv = document.getElementById('cart');
 
@@ -84,14 +82,13 @@ const displayPlants = (plants) => {
     const card = document.createElement('div');
     card.className = 'bg-white rounded-lg shadow flex flex-col';
 
-    // Format description: first 60 chars + ...
     let description = plant.description || 'No description available';
     if (description.length > 60) {
       description = description.slice(0, 60) + '...';
     }
 
     card.innerHTML = `
-      <img src="${plant.image}" alt="${plant.name}" class="w-full h-48 object-cover rounded-t">
+      <img src="${plant.image}" alt="${plant.name}" class="w-full h-48 object-cover rounded-t cursor-pointer">
       <div class="p-3 flex flex-col">
         <h4 class="font-semibold text-lg cursor-pointer">${plant.name}</h4>
         <p class="text-sm text-gray-600 mt-1">${description}</p>
@@ -103,21 +100,23 @@ const displayPlants = (plants) => {
       </div>
     `;
 
+    // Add to cart button
     card.querySelector('.add-to-cart').addEventListener('click', () => addToCart(plant));
+
+    // Open modal on name or image click
+    card.querySelector('h4').addEventListener('click', () => openModal(plant));
+    card.querySelector('img').addEventListener('click', () => openModal(plant));
+
     treeContainer.appendChild(card);
   });
 };
 
 // ------------------ Cart Functions ------------------
 const addToCart = (plant) => {
-  let existing = cartItems.find(item => item.id === plant.id);
-
-  if (existing) {
-    existing.quantity += 1;
-  } else {
-    cartItems.push({ ...plant, quantity: 1 });
+  let exists = cartItems.find(item => item.id === plant.id);
+  if (!exists) {
+    cartItems.push(plant); // Only one entry per tree
   }
-
   updateCart();
 };
 
@@ -127,63 +126,83 @@ const removeFromCart = (id) => {
 };
 
 const updateCart = () => {
-  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  const totalCost = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-  cartCount.textContent = totalItems;
-  cartTotalSpan.textContent = totalCost;
-
   let itemsContainer = document.getElementById('cart-items');
   if (!itemsContainer) {
     itemsContainer = document.createElement('div');
     itemsContainer.id = 'cart-items';
-    cartDiv.insertBefore(itemsContainer, cartDiv.querySelector('button'));
+    cartDiv.appendChild(itemsContainer);
   }
 
   itemsContainer.innerHTML = '';
 
-  cartItems.forEach(item => {
-    const div = document.createElement('div');
-    div.className = 'cart-item mt-2 text-left';
-    div.innerHTML = `
-      <div class="flex justify-between items-center">
-        <span class="font-semibold">${item.name} x${item.quantity}</span>
-        <button class="text-red-500 font-bold hover:text-red-700">✕</button>
-      </div>
-      <div class="text-green-700 font-semibold">$${item.price * item.quantity}</div>
-    `;
-    div.querySelector('button').addEventListener('click', () => removeFromCart(item.id));
-    itemsContainer.appendChild(div);
-  });
-};
-
-// ------------------ Checkout ------------------
-const checkout = () => {
   if (cartItems.length === 0) {
-    alert("Your cart is empty!");
+    itemsContainer.innerHTML = '<p class="text-gray-500">No items in cart</p>';
     return;
   }
 
-  let summary = "🛒 Checkout Summary:\n\n";
+  let totalCost = 0;
+
   cartItems.forEach(item => {
-    summary += `${item.name} x${item.quantity} = $${item.price * item.quantity}\n`;
+    totalCost += item.price;
+
+    const div = document.createElement('div');
+    div.className = 'cart-item mt-2 border-b border-gray-200 pb-2';
+
+    div.innerHTML = `
+      <div class="flex justify-between items-center">
+        <span class="font-semibold">${item.name}</span>
+        <button class="text-red-500 font-bold hover:text-red-700">X</button>
+      </div>
+      <div class="text-green-700 font-bold mt-1">$${item.price}</div>
+    `;
+
+    div.querySelector('button').addEventListener('click', () => removeFromCart(item.id));
+    itemsContainer.appendChild(div);
   });
-  summary += `\nTotal: $${cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0)}`;
 
-  alert(summary);
-
-  cartItems = [];
-  updateCart();
+  const totalDiv = document.createElement('div');
+  totalDiv.className = 'text-right font-bold mt-3';
+  totalDiv.textContent = `Total: $${totalCost}`;
+  itemsContainer.appendChild(totalDiv);
 };
 
 // ------------------ Initialize ------------------
 document.addEventListener('DOMContentLoaded', () => {
   loadCategories();
   loadAllPlants();
+});
 
-  // Attach checkout button event
-  const checkoutBtn = document.getElementById("checkoutBtn");
-  if (checkoutBtn) {
-    checkoutBtn.addEventListener("click", checkout);
+// ------------------ Modal Functions ------------------
+const treeModal = document.getElementById("treeModal");
+const modalImage = document.getElementById("modalImage");
+const modalName = document.getElementById("modalName");
+const modalDescription = document.getElementById("modalDescription");
+const modalCategory = document.getElementById("modalCategory");
+const modalPrice = document.getElementById("modalPrice");
+const closeModalBtn = document.getElementById("closeModal");
+
+let currentPlant = null;
+
+const openModal = (plant) => {
+  currentPlant = plant;
+  modalImage.src = plant.image;
+  modalName.textContent = plant.name;
+  modalDescription.textContent = plant.description || "No description available";
+  modalCategory.textContent = plant.category || "Unknown";
+  modalPrice.textContent = plant.price || 0;
+  treeModal.classList.remove("hidden");
+  treeModal.classList.add("flex");
+};
+
+const closeModal = () => {
+  treeModal.classList.add("hidden");
+  treeModal.classList.remove("flex");
+};
+
+closeModalBtn.addEventListener("click", closeModal);
+
+treeModal.addEventListener("click", (e) => {
+  if (e.target === treeModal) {
+    closeModal();
   }
 });
